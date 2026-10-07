@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import closing
 import hashlib
 import json
 import os
@@ -98,10 +99,10 @@ def main():
     source_db = Path.home() / "Library/Application Support/VFX Element Tagger/library.sqlite3"
     target_db = target / "data/library.sqlite3"
     target_db.parent.mkdir(exist_ok=True)
-    with sqlite3.connect(source_db.as_uri() + "?mode=ro", uri=True) as source:
-        with sqlite3.connect(target_db) as dest:
+    with closing(sqlite3.connect(source_db.as_uri() + "?mode=ro", uri=True)) as source:
+        with closing(sqlite3.connect(target_db)) as dest:
             source.backup(dest)
-    with sqlite3.connect(target_db) as db:
+    with closing(sqlite3.connect(target_db)) as db, db:
         count = db.execute("SELECT count(*) FROM elements").fetchone()[0]
         for key, payload in db.execute("SELECT element_id, payload_json FROM elements").fetchall():
             updated = remap(json.loads(payload), mappings)
@@ -109,7 +110,7 @@ def main():
         if db.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise RuntimeError("relocated catalog integrity failure")
     settings = {"models_dir": str(target_models), "library": str(target_db)}
-    with sqlite3.connect(target_db) as database:
+    with closing(sqlite3.connect(target_db)) as database:
         artifact_roots = [str(Path(json.loads(row[0])["poster_path"]).parent.parent.parent)
                           for row in database.execute("SELECT payload_json FROM elements")
                           if json.loads(row[0]).get("poster_path")]

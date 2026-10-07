@@ -1,19 +1,67 @@
 from __future__ import annotations
 
 import sys
+import sqlite3
 import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from unittest.mock import patch
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from vfx_element_tagger.models import Element, SourceRepresentation  # noqa: E402
+from vfx_element_tagger.models import Element, ProcessingEvent, SourceRepresentation  # noqa: E402
 from vfx_element_tagger.store import LibraryStore  # noqa: E402
 
 
 class SQLiteStoreTests(unittest.TestCase):
+    def test_operations_close_connections_including_readonly_backups_and_json_ratings(self):
+        connect = sqlite3.connect
+        connections = []
+
+        def tracked_connect(*args, **kwargs):
+            connection = connect(*args, **kwargs)
+            connections.append(connection)
+            return connection
+
+        with tempfile.TemporaryDirectory() as tmp, \
+             patch("vfx_element_tagger.store.sqlite3.connect", side_effect=tracked_connect):
+            for suffix in (".sqlite3", ".json"):
+                with self.subTest(suffix=suffix):
+                    store = LibraryStore(Path(tmp) / ("library" + suffix))
+                    store.save([_element("first", "smoke")])
+                    store.save_element(_element("second", "fire"))
+                    self.assertEqual(len(store.load()), 2)
+                    self.assertIsNotNone(store.load_one("first"))
+                    self.assertTrue(store.revision())
+                    store.append_events([ProcessingEvent("first", "test", "success")])
+                    store.rate_element("first", "artist", 5)
+                    self.assertEqual(store.rating_summary("first")["rating_count"], 1)
+                    with self.assertRaises(KeyError):
+                        store.rate_element("missing", "artist", 5)
+                    backup = store.backup(Path(tmp) / ("backup" + suffix))
+                    self.assertEqual(len(LibraryStore.load_readonly(backup)), 2)
+            self.assertTrue(connections)
+            for connection in connections:
+                with self.assertRaises(sqlite3.ProgrammingError):
+                    connection.execute("SELECT 1")
+
+    def test_failed_full_save_rolls_back_and_closes_connection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store = LibraryStore(Path(tmp) / "library.sqlite3")
+            first = _element("first", "smoke")
+            store.save([first])
+            revision = store.revision()
+            connection = store._connect()
+            with patch.object(store, "_connect", return_value=connection), \
+                 self.assertRaises(sqlite3.IntegrityError):
+                store.save([first, first])
+            with self.assertRaises(sqlite3.ProgrammingError):
+                connection.execute("SELECT 1")
+            self.assertEqual(store.revision(), revision)
+            self.assertEqual([item.element_id for item in store.load()], ["first"])
+
     def test_sqlite_round_trip_and_single_element_update(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             store = LibraryStore(Path(tmp) / "library.sqlite3")

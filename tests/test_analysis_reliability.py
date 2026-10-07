@@ -71,7 +71,17 @@ class AnalysisReliabilityTests(unittest.TestCase):
 
     def test_paths_support_relative_settings_and_environment_override(self):
         with patch.object(settings, "project_settings", return_value={"models_dir": "local-models"}), \
-             patch.dict(settings.os.environ, {}, clear=True):
+             patch.dict(settings.os.environ, {}, clear=True), \
+             patch.object(settings.Path, "home", side_effect=RuntimeError("No home directory")):
             self.assertEqual(settings.models_dir(), settings.PROJECT_ROOT / "local-models")
-            with patch.dict(settings.os.environ, {"VFX_TAGGER_MODELS_DIR": "/tmp/models"}):
-                self.assertEqual(settings.models_dir(), Path("/tmp/models"))
+            override = settings.PROJECT_ROOT.parent / "override-models"
+            with patch.dict(settings.os.environ, {"VFX_TAGGER_MODELS_DIR": str(override)}):
+                self.assertEqual(settings.models_dir(), override)
+
+    def test_models_default_resolves_home_only_when_needed(self):
+        home = settings.PROJECT_ROOT.parent / "example-home"
+        with patch.object(settings, "project_settings", return_value={}), \
+             patch.dict(settings.os.environ, {}, clear=True), \
+             patch.object(settings.Path, "home", return_value=home) as resolve_home:
+            self.assertEqual(settings.models_dir(), home / ".cache/vfx-element-tagger/models")
+            resolve_home.assert_called_once_with()

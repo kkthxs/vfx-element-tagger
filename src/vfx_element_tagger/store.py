@@ -43,7 +43,7 @@ class LibraryStore:
         if not self.path.exists():
             return []
         if self.is_sqlite:
-            with self._connect() as connection:
+            with closing(self._connect()) as connection, connection:
                 rows = connection.execute(
                     "SELECT payload_json FROM elements ORDER BY sort_order, element_id"
                 ).fetchall()
@@ -56,7 +56,7 @@ class LibraryStore:
         """Read existing data without schema initialization, journal changes or creation."""
         path = path.expanduser().resolve()
         if path.suffix.lower() in SQLITE_SUFFIXES:
-            with sqlite3.connect(path.as_uri() + "?mode=ro", uri=True) as connection:
+            with closing(sqlite3.connect(path.as_uri() + "?mode=ro", uri=True)) as connection:
                 rows = connection.execute("SELECT payload_json FROM elements ORDER BY sort_order, element_id").fetchall()
             return [Element.from_dict(json.loads(row[0])) for row in rows]
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -64,7 +64,7 @@ class LibraryStore:
 
     def load_one(self, element_id: str) -> Element | None:
         if self.is_sqlite:
-            with self._connect() as connection:
+            with closing(self._connect()) as connection, connection:
                 row = connection.execute(
                     "SELECT payload_json FROM elements WHERE element_id = ?",
                     (element_id,),
@@ -75,7 +75,7 @@ class LibraryStore:
     def save(self, elements: list[Element]) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         if self.is_sqlite:
-            with self._connect() as connection:
+            with closing(self._connect()) as connection, connection:
                 connection.execute("BEGIN IMMEDIATE")
                 connection.execute(
                     "CREATE TEMP TABLE IF NOT EXISTS desired_element_ids "
@@ -130,7 +130,7 @@ class LibraryStore:
                 elements.append(element)
             self.save(elements)
             return
-        with self._connect() as connection:
+        with closing(self._connect()) as connection, connection:
             connection.execute("BEGIN IMMEDIATE")
             row = connection.execute(
                 "SELECT sort_order FROM elements WHERE element_id = ?",
@@ -152,7 +152,7 @@ class LibraryStore:
             return
         if self.is_sqlite:
             now = _now()
-            with self._connect() as connection:
+            with closing(self._connect()) as connection, connection:
                 connection.executemany(
                     """
                     INSERT INTO processing_events (
@@ -210,7 +210,7 @@ class LibraryStore:
 
     def revision(self) -> str:
         if self.is_sqlite:
-            with self._connect() as connection:
+            with closing(self._connect()) as connection, connection:
                 row = connection.execute(
                     "SELECT value FROM catalog_meta WHERE key = 'revision'"
                 ).fetchone()
@@ -238,7 +238,7 @@ class LibraryStore:
             raise ValueError("rating must be an integer from 1 to 5")
         rater_name = " ".join(str(rater_name or "").split())[:100]
         database_path = self._ratings_database_path()
-        with self._ratings_connect(database_path) as connection:
+        with closing(self._ratings_connect(database_path)) as connection, connection:
             if self.is_sqlite:
                 exists = connection.execute(
                     "SELECT 1 FROM elements WHERE element_id = ?", (element_id,)
@@ -272,7 +272,7 @@ class LibraryStore:
         database_path = self._ratings_database_path()
         if not database_path.exists():
             return {}
-        with self._ratings_connect(database_path) as connection:
+        with closing(self._ratings_connect(database_path)) as connection, connection:
             rows = connection.execute(
                 """
                 SELECT element_id, COUNT(*) AS rating_count, AVG(rating) AS rating_average,
@@ -311,7 +311,7 @@ class LibraryStore:
 
     def _initialize_sqlite(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self._connect(initialize=False) as connection:
+        with closing(self._connect(initialize=False)) as connection, connection:
             connection.execute("PRAGMA journal_mode=WAL")
             connection.execute("PRAGMA synchronous=NORMAL")
             connection.executescript(
@@ -387,9 +387,13 @@ class LibraryStore:
         if initialize and not self.path.exists():
             self._initialize_sqlite()
         connection = sqlite3.connect(self.path, timeout=30.0)
-        connection.row_factory = sqlite3.Row
-        connection.execute("PRAGMA foreign_keys=ON")
-        connection.execute("PRAGMA busy_timeout=10000")
+        try:
+            connection.row_factory = sqlite3.Row
+            connection.execute("PRAGMA foreign_keys=ON")
+            connection.execute("PRAGMA busy_timeout=10000")
+        except BaseException:
+            connection.close()
+            raise
         return connection
 
     def _ratings_database_path(self) -> Path:
@@ -402,22 +406,26 @@ class LibraryStore:
             return self._connect()
         path.parent.mkdir(parents=True, exist_ok=True)
         connection = sqlite3.connect(path, timeout=30.0)
-        connection.row_factory = sqlite3.Row
-        connection.execute("PRAGMA journal_mode=WAL")
-        connection.execute("PRAGMA busy_timeout=10000")
-        connection.execute(
-            """
-            CREATE TABLE IF NOT EXISTS ratings (
-                element_id TEXT NOT NULL,
-                rater_id TEXT NOT NULL,
-                rater_name TEXT NOT NULL DEFAULT '',
-                rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
-                created_at TEXT NOT NULL,
-                updated_at TEXT NOT NULL,
-                PRIMARY KEY(element_id, rater_id)
-            ) WITHOUT ROWID
-            """
-        )
+        try:
+            connection.row_factory = sqlite3.Row
+            connection.execute("PRAGMA journal_mode=WAL")
+            connection.execute("PRAGMA busy_timeout=10000")
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS ratings (
+                    element_id TEXT NOT NULL,
+                    rater_id TEXT NOT NULL,
+                    rater_name TEXT NOT NULL DEFAULT '',
+                    rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT NOT NULL,
+                    PRIMARY KEY(element_id, rater_id)
+                ) WITHOUT ROWID
+                """
+            )
+        except BaseException:
+            connection.close()
+            raise
         return connection
 
     def _upsert_element(

@@ -34,7 +34,7 @@ def public_files(root: Path) -> list[Path]:
         for path in sorted((root / directory).rglob("*")):
             relative = path.relative_to(root)
             if path.is_file() and path.suffix in suffixes and "__pycache__" not in relative.parts:
-                if str(relative) not in PRIVATE:
+                if relative.as_posix() not in PRIVATE:
                     files.append(path)
     protocol = root / "evaluation/BENCHMARK-PROTOCOL.md"
     if protocol.is_file():
@@ -78,7 +78,7 @@ def main():
         target = output / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, target)
-        entries.append({"path": str(relative), "sha256": hashlib.sha256(target.read_bytes()).hexdigest()})
+        entries.append({"path": relative.as_posix(), "sha256": hashlib.sha256(target.read_bytes()).hexdigest()})
     report = {
         "schema": 1, "files": entries, "checks": {"private_path_and_credential_patterns": "passed"},
         "excluded": ["development_git_history", "model_weights", "media", "catalogs", "local_config",

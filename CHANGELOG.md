@@ -18,6 +18,8 @@ First public-release candidate, scoped to AI-assisted cataloging on one Apple Si
 - Pin model revisions and check SHA-256 files before known model snapshots load.
 - Freeze the complete Mac/Python 3.12 runtime and audit its dependencies.
 - Add user/support/security documentation, regression tests and cross-platform core CI.
+- Close SQLite connections deterministically, preserve rollback on failed writes, and
+  fix explicit model paths and private-export exclusions on Windows.
 - Export public source from an allowlist without private development history or media.
 
 Known limitations: AI confidence is uncalibrated; descriptions, materials, counts, framing,

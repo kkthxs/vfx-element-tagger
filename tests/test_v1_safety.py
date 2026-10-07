@@ -1,4 +1,5 @@
 from copy import deepcopy
+from contextlib import closing
 import http.client
 from http.server import ThreadingHTTPServer
 import json
@@ -119,7 +120,7 @@ class BackupTests(unittest.TestCase):
             restored = LibraryStore(backup)
             self.assertEqual(restored.load()[0].to_dict(), item.to_dict())
             self.assertEqual(restored.rating_summary("one"), store.rating_summary("one"))
-            with sqlite3.connect(backup) as connection:
+            with closing(sqlite3.connect(backup)) as connection:
                 self.assertEqual(connection.execute("SELECT count(*) FROM processing_events").fetchone()[0], 1)
             with self.assertRaises(ValueError):
                 store.backup(store.path)

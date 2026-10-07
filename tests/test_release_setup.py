@@ -53,6 +53,7 @@ class ReleaseSetupTests(unittest.TestCase):
             root = Path(tmp)
             examples = ["README.md", "src/catalog.py", "scripts/export_public_release.py",
                         "scripts/prepare_article_catalog.py", "scripts/stress_test_analysis.py",
+                        "constraints/macos-mlx-tested.txt",
                         "evaluation/BENCHMARK-PROTOCOL.md", "evaluation/private.json",
                         ".git/config", ".vfx-tagger.json", "test_assets/clip.mov",
                         "docs/screenshots/library.jpg", "models/weights.safetensors"]
@@ -61,7 +62,7 @@ class ReleaseSetupTests(unittest.TestCase):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text("safe example")
             files = export_public_release.public_files(root)
-            self.assertEqual({str(path.relative_to(root)) for path in files},
+            self.assertEqual({path.relative_to(root).as_posix() for path in files},
                              {"README.md", "src/catalog.py", "scripts/export_public_release.py",
                               "evaluation/BENCHMARK-PROTOCOL.md"})
             self.assertEqual(export_public_release.scan_files(root, files), [])
