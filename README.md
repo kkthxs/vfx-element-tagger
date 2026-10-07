@@ -1,15 +1,21 @@
 # VFX Element Tagger
 
-Local-first catalog, AI-assisted description, artist review and search for VFX footage
-and image sequences. Keep source media on disk, generate browsing proxies, and retain
-both model evidence and artist corrections.
+Tired of digging through a VFX library labelled only "Fire" or "Smoke"? VFX Element
+Tagger uses local AI to help you search by motion, direction, framing, compositing
+use and whether an element cuts the edge of frame, with artist review to keep you
+in control.
 
 **Release status:** v1 release candidate, package version `1.0.0rc1`. This is an
-AI-assisted local workstation tool, not certified unattended analysis. Hosted CI and
-independent artist evaluation remain required before a stable `v1.0.0` tag.
+AI-assisted local workstation tool, not certified unattended analysis. Core CI passes
+on macOS, Linux and Windows; independent artist evaluation remains required before a
+stable `v1.0.0` tag.
 
 [Download releases](https://github.com/kkthxs/vfx-element-tagger/releases) or
 [browse the source](https://github.com/kkthxs/vfx-element-tagger).
+
+![VFX Element Tagger library showing smoke, fire, lightning and explosion elements](https://github.com/kkthxs/vfx-element-tagger/releases/download/v1.0.0-rc.1/interface-overview.jpg)
+
+*Interface preview using authorised test footage. Original media is not included.*
 
 ## Start Here
 
@@ -26,7 +32,7 @@ independent artist evaluation remain required before a stable `v1.0.0` tag.
 | --- | --- |
 | Full default AI workflow on an Apple Silicon Mac | Tested locally with MLX/Metal and Python 3.12 |
 | Catalog, deterministic ingest, review and browser on macOS | Tested locally |
-| Catalog/browser on Linux or Windows | Portable design; CI configured, platform validation pending |
+| Catalog/browser on Linux or Windows | Core tests pass on Python 3.11/3.12; complete media workflows not certified |
 | Default AI workflow on Intel Mac, Windows, Linux/CUDA or CPU-only | Not validated/supported by this release |
 
 MLX itself now documents Linux CUDA and CPU backends. That does **not** establish
