@@ -50,9 +50,9 @@ hosted account, public cloud-analysis service or supported internet deployment.
 | --- | --- | --- |
 | Apple Silicon Mac | Tested locally | Tested with MLX/Metal |
 | Intel Mac | Expected portable core; not tested | Not supported by the tested configuration |
-| Linux | Expected portable core; CI validation pending | No validated CUDA/CPU workflow |
-| Windows | Expected portable core; CI validation pending | No validated default backend |
-| Another device's browser | Can connect to a reachable host | Analysis runs on the host, not in the browser |
+| Linux | Core tests pass on Python 3.11/3.12; media workflow not certified | No validated CUDA/CPU workflow |
+| Windows | Core tests pass on Python 3.11/3.12; media workflow not certified | No validated default backend |
+| Another device's browser | Not supported; v1 serves only on loopback | Analysis runs on the local workstation, not in the browser |
 
 Use native ARM64 Python 3.12 for the tested Mac AI workflow. The package declares Python
 3.11+, but newer Python versions and the full AI stack on 3.11 have not been certified.
@@ -137,7 +137,8 @@ python -m pip install -e ".[hashing]"
 
 Install FFmpeg/ffprobe separately for your OS. On Windows, create the environment with
 `py -3.12 -m venv .venv` and activate using `.venv\Scripts\Activate.ps1` in PowerShell.
-Windows/Linux commands are provided for the portable core, not as a claim of tested AI support.
+Windows/Linux commands are provided for the CI-tested portable core, not as a claim of
+tested AI support or complete FFmpeg/preview compatibility on those systems.
 
 The `[models]` extra is the older PyTorch/SigLIP/text-embedding stack. It is not required
 for the recommended MLX gated workflow and does not enable a new Windows/CUDA backend.

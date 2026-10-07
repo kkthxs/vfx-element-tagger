@@ -46,7 +46,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "63b620f086344f8c82060f7e8f6eb45522ec83ea1ef695ad0850259335c06379"
+      "sha256": "ec88bd0e14092dcc6560c8ec11f77aab70599556ed2237ac48b243f0fd78abf0"
     },
     {
       "path": "SECURITY.md",
@@ -358,11 +358,11 @@
     },
     {
       "path": "docs/RELEASE-READINESS.md",
-      "sha256": "c524a272d0f0bad6b6f315553531d59472a59ac04b1024cb78c59d94d53e30a6"
+      "sha256": "1cee28abccda868c7194aa867191940df34cc53f46d6521e30bc18c8f644b2ef"
     },
     {
       "path": "docs/RELEASE-VERIFICATION.md",
-      "sha256": "4e180fdbf4c9a732c73e06d2c8a15ae63fc56bc7a4040144ba8020626a34f509"
+      "sha256": "380341c6cb5bc4acf6bc5e043a3a78af82af424be878d847e96ab764bb2f5549"
     },
     {
       "path": "docs/THIRD-PARTY.md",
@@ -370,7 +370,7 @@
     },
     {
       "path": "docs/USER-GUIDE.md",
-      "sha256": "0f571f0365cd703365a929a8ae0e342161b9dded7f8c8fe5b61f1fe484c3017a"
+      "sha256": "139d06ca3b869289b8bef3fb5fcbd5c5267b51cc09692f965b62023b6b5e2e3c"
     },
     {
       "path": "constraints/macos-arm64-py312.lock.txt",

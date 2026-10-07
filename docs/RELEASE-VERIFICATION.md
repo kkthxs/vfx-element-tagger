@@ -1,6 +1,7 @@
 # Release Candidate Verification
 
-Date: 2026-10-07. Candidate: `1.0.0rc1`.
+Local AI verification: 2026-10-07. Publication/core regression update: 2026-10-08.
+Candidate: `1.0.0rc1`.
 
 ## Scope and Environment
 
@@ -14,7 +15,14 @@ Date: 2026-10-07. Candidate: `1.0.0rc1`.
 
 ## Results
 
-- 165 unit/regression tests pass in a pristine environment installed from the final lock.
+- 168 unit/regression tests pass in a pristine environment installed from the final lock.
+- Database regressions verify explicit connection closure for SQLite/JSON ratings,
+  read-only loads and backups, and rollback/closure after a failed transactional save.
+  Windows private-export exclusions and explicit model-directory settings are covered.
+- [Hosted core CI](https://github.com/kkthxs/vfx-element-tagger/actions/runs/37703835212)
+  passes all seven jobs: Python 3.11/3.12 on macOS, Linux and Windows, plus packaging.
+  These jobs run the regression suite and CLI checks, not model inference or a complete
+  OS-specific media/browser compatibility test.
 - `pip check`: no broken requirements.
 - `pip-audit` 2.10.1, PyPI advisory service: no known vulnerabilities reported for the
   complete updated runtime on this date. This is not a guarantee against unknown defects.
@@ -50,7 +58,7 @@ Date: 2026-10-07. Candidate: `1.0.0rc1`.
 
 ## Not Certified
 
-Hosted CI on other operating systems, clean new-Mac setup, a complete network re-download
+Complete media/AI workflows on other operating systems, clean new-Mac setup, a complete network re-download
 of all model weights, independent held-out accuracy, minimum RAM, unattended auto-accept,
 LAN/public hosting and arbitrary catalog relocation remain outside this evidence.
 

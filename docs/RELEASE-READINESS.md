@@ -28,12 +28,13 @@ has classification, crop, count and direction errors. Its figures are not held-o
 - Made artist review mandatory for new predictions; auto-accept requires an experimental flag.
 - Enforced local-only binding and Host/Origin/request-body protections with HTTP negative tests.
 - Made JSON saves atomic and catalog backups non-overwriting with SQLite integrity validation.
-- Added a core macOS/Linux/Windows CI matrix and package build checks; hosted results are pending.
+- Closed SQLite handles explicitly and fixed Windows model-path and private-export path handling.
+- Passed the hosted macOS/Linux/Windows core matrix on Python 3.11/3.12 and package build checks.
 - Updated the downloader to the current Hugging Face signature and added offline regression tests.
 - Added ignores for build output, backups and environment-secret files. Existing model/media/data ignores remain.
-- Added a source-distribution manifest for scripts, guides, constraints and notices. Historical
-  evaluation reports/data are excluded from Python source archives pending privacy/rights review;
-  the existing Git history still needs separate owner approval before publication.
+- Added a source-distribution manifest for scripts, guides, constraints and notices. Private
+  evaluation reports/data and development history are excluded from the new public repository;
+  that exclusion also applies to downloadable release artifacts.
 
 ## Stable v1 Blockers
 
@@ -55,9 +56,10 @@ preview may accept some known limitations, but must state them clearly and requi
 ## Platform Scope
 
 The default full model path is tested on Apple Silicon with MLX/Metal. Core ingest,
-SQLite/JSON, review and browser code use portable Python/external tools, but Linux/Windows
-support is provisional until CI and real decode/preview checks pass. Core CI does not
-run AI inference or establish Metal/CUDA compatibility.
+SQLite/JSON, review and browser code use portable Python/external tools. Hosted core tests
+pass on macOS, Linux and Windows with Python 3.11/3.12. Complete Linux/Windows media
+workflows still need real decode/preview checks. Core CI does not run AI inference or
+establish Metal/CUDA compatibility.
 
 Upstream [MLX documents Linux CPU/CUDA support](https://ml-explore.github.io/mlx/build/html/install.html).
 This is not a ready-made cross-platform backend for our model adapters. A future Linux
@@ -71,28 +73,28 @@ point, not a supported end-user port. Do not describe MLX itself as universally 
 
 - [x] Confirm the repository name and public visibility with the owner; publish application
       source only, excluding private history, media and article assets.
-- [ ] Review every tracked file and every commit, not just the working tree.
-- [ ] Remove or redact private paths, asset names and studio notes where required. They
-      exist in historical engineering/evaluation documents; `.gitignore` cannot hide history.
-- [ ] Run a dedicated secret scan on all refs. The local targeted token-pattern check
-      found no matches, but was not a comprehensive historical secret scan.
-- [ ] Verify no model binaries, production media, live catalogs, caches or credentials enter the push.
+- [x] Start fresh public history from the audited text-only allowlist; do not push development history.
+- [x] Scan the exact public trees for machine paths and credential patterns; private historical
+      engineering/evaluation files remain outside the public history.
+- [x] Run offline `detect-secrets` across all public commits. Only declared model/manifest
+      integrity hashes were dismissed; no unresolved candidates remain. This is not a guarantee.
+- [x] Verify no model binaries, production media, live catalogs, caches or credentials enter the push.
 - [ ] Confirm source ownership and MIT licensing; retain `NOTICE` for adapted MLX-VLM code.
 - [ ] Review model cards/access terms at the exact selected revisions. Do not bundle weights.
-- [ ] Keep article screenshots/test footage separate from public source and packages. The
+- [x] Keep article screenshots/test footage separate from public source and packages. The
       article assets are private local outputs authorized for that purpose, not bundled examples.
 - [x] Establish the public issue and private security-reporting channels.
 
 ### Before a Release Candidate
 
 - [ ] Complete a clean Mac setup using only the published instructions.
-- [ ] Run hosted core CI and build/wheel metadata checks.
+- [x] Run hosted core CI and build/wheel metadata checks.
 - [ ] Test ffprobe/FFmpeg ingest, image sequence gaps, alpha, EXR fallback and poster playback.
 - [x] Verify incremental ingest and AI signatures, forced reruns and saved human corrections.
 - [ ] Exercise canceled inference, corrupt media, unavailable challenger and missing model errors.
 - [x] Test restoring SQLite payloads, artist fields, ratings and processing events; separately check media access.
 - [ ] Record runtime versions, model revisions, disk space, memory and approximate per-clip time.
-- [ ] Publish a known-issues section and the Mac-only tested AI scope.
+- [x] Publish a known-issues section and the Mac-only tested AI scope.
 
 ### Before Stable v1
 
@@ -107,10 +109,15 @@ not close the remaining stable-release gates or authorize publishing private his
 
 ## Verification Evidence
 
-The current suite has 165 passing tests in a pristine environment installed from the
+The current suite has 168 passing tests in a pristine environment installed from the
 final runtime lock. Coverage includes forced ingest artist/rating retention, changed-source
-invalidation, regrouping refusal, model tampering, backup restore and HTTP request rejection.
-These tests do not certify semantic accuracy or another OS.
+invalidation, regrouping refusal, model tampering, backup restore, deterministic database
+closure/rollback and HTTP request rejection.
+These tests do not certify semantic accuracy or a complete media/AI workflow on another OS.
+
+The [hosted verification run](https://github.com/kkthxs/vfx-element-tagger/actions/runs/37703835212)
+passes all six OS/Python core jobs and the packaging job. It includes the Windows
+database-handle, explicit model-path and private-export fixes.
 
 A fresh dependency-free virtual environment installed that wheel, ingested a synthetic
 320x240/24-fps clip, created its poster and both previews, then reused the unchanged
@@ -122,7 +129,7 @@ the existing Mac, not a clean-machine AI or cross-platform certification.
 See [release verification](RELEASE-VERIFICATION.md),
 [the held-out protocol](../evaluation/BENCHMARK-PROTOCOL.md) and
 [the user guide](USER-GUIDE.md). Private diagnostic reports are deliberately excluded
-from public source. Hosted CI and independent evaluation remain stable-release gates;
+from public source. Full platform workflows and independent evaluation remain stable-release gates;
 no stable-release approval is implied by a green unit suite.
 
 ## Safe Public Source Export

@@ -168,7 +168,7 @@ library rather than the order of pipeline stages:
 - an optimal-action strip on every analysed card, with visible range and peak detail in the inspector;
 - review-status and technical filters, plus semantic search across descriptions, tags, and filenames.
 - a per-artist 1–5 star quality rating, Bayesian quality sorting, and rating counts on cards;
-- bounded card/video rendering, compact gzip responses, cache validation, and byte-range preview streaming for larger or remote libraries.
+- bounded card/video rendering, compact gzip responses, cache validation, and byte-range preview streaming for larger local libraries.
 
 Elements awaiting model analysis receive a conservative provisional family from an obvious
 filename cue (for example, `Falling_Snow` appears under Snow) and remain visibly marked
@@ -176,17 +176,18 @@ filename cue (for example, `Falling_Snow` appears under Snow) and remain visibly
 challenger-comparison controls remain available under **Pipeline & model controls** in the
 element inspector.
 
-## Scalable catalog and network layout
+## Local catalog layout
 
-Use one SQLite catalog on the application server's **local disk** and let every browser, analysis
-worker, or remote location reach it through the HTTP service. Do not put the live `.sqlite3`,
+Use one SQLite catalog on the workstation's **local disk**. The browser connects through
+the local HTTP service, and analysis jobs run on the same workstation. v1 does not support
+remote clients or distributed workers. Do not put the live `.sqlite3`,
 `-wal`, or `-shm` files on Dropbox, SMB, NFS, or another network mount: SQLite protects concurrent
 threads and processes on one host, but its database file is not a network protocol.
 
 ```mermaid
 flowchart LR
-    A["Artist browsers"] -->|HTTP / HTTPS| S["VFX catalog service"]
-    W["Analysis workers"] -->|per-element transactions| D[("Server-local SQLite")]
+    A["Local artist browser"] -->|Loopback HTTP| S["Local VFX catalog service"]
+    W["Local analysis job"] -->|per-element transactions| D[("Workstation-local SQLite")]
     S --> D
     S --> P["Preview artifact storage"]
     D --> B["Versioned JSON exports / backups"]
