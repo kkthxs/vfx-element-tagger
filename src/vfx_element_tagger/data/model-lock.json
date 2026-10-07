@@ -1,0 +1,184 @@
+{
+  "models": {
+    "analysis_primary": {
+      "files": {
+        "chat_template.jinja": {
+          "sha256": "a4aee8afcf2e0711942cf848899be66016f8d14a889ff9ede07bca099c28f715",
+          "size": 7756
+        },
+        "config.json": {
+          "sha256": "f3efc81b2ea8d96a45301037d3ccccbcccdef44a961845c87f286aaddbc6eaaa",
+          "size": 3366
+        },
+        "model.safetensors": {
+          "sha256": "5fb9acd0246866381cf8c5c354c6db1019f6498eec4ccb4f5edcc71ffeacb2db",
+          "size": 3034300695
+        },
+        "model.safetensors.index.json": {
+          "sha256": "52e534c41f7b97708329c85f762e5882bf48bd5955a422c6ae74eba321e6048a",
+          "size": 101944
+        },
+        "preprocessor_config.json": {
+          "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+          "size": 390
+        },
+        "processor_config.json": {
+          "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b",
+          "size": 1300
+        },
+        "tokenizer.json": {
+          "sha256": "87a7830d63fcf43bf241c3c5242e96e62dd3fdc29224ca26fed8ea333db72de4",
+          "size": 19989343
+        },
+        "tokenizer_config.json": {
+          "sha256": "e98f1901ac6f0adff67b1d540bfa0c36ac1a0cf59eb72ed78146ef89aafa1182",
+          "size": 1139
+        },
+        "video_preprocessor_config.json": {
+          "sha256": "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13",
+          "size": 385
+        },
+        "vocab.json": {
+          "sha256": "ce99b4cb2983d118806ce0a8b777a35b093e2000a503ebde25853284c9dfa003",
+          "size": 6722759
+        }
+      },
+      "local_patches": [],
+      "repo_id": "mlx-community/Qwen3.5-4B-MLX-4bit",
+      "revision": "32f3e8ecf65426fc3306969496342d504bfa13f3"
+    },
+    "challenger_marlin": {
+      "files": {
+        "chat_template.jinja": {
+          "sha256": "273d8e0e683b885071fb17e08d71e5f2a5ddfb5309756181681de4f5a1822d80",
+          "size": 7755
+        },
+        "config.json": {
+          "sha256": "7664d04f1ce0b2ab5d397435e1bc0ba1910b402f2ba2b901152873204a58d13f",
+          "size": 3719
+        },
+        "generation_config.json": {
+          "sha256": "0d54a28c36c5143413aa18a910f661d17483909e87321f34ad58859b66cf25b4",
+          "size": 137
+        },
+        "model.safetensors": {
+          "sha256": "0575deb6f9e9f68405979f4e7d4cf42f0361774f722a480180dff95d414466bf",
+          "size": 2662909845
+        },
+        "model.safetensors.index.json": {
+          "sha256": "83ee945a045012893ec93b0074510f4e581ac4130b7284307137ffeb35ba0ef2",
+          "size": 81722
+        },
+        "modeling_marlin.py": {
+          "sha256": "baec8f0a2cabf5d64a883d8b5ac1881a9119f91f2251e6964f45447d24b19733",
+          "size": 23098
+        },
+        "preprocessor_config.json": {
+          "sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516",
+          "size": 390
+        },
+        "processor_config.json": {
+          "sha256": "566b6b6ff98913f6b18295b03c03244875bf6c15f96db586d8b024060e54f0c3",
+          "size": 991
+        },
+        "tokenizer.json": {
+          "sha256": "06b9509352d2af50381ab2247e083b80d32d5c0aba91c272ca9ff729b6a0e523",
+          "size": 19989325
+        },
+        "tokenizer_config.json": {
+          "sha256": "792fa3f0cb88b111e54ef3134c873531008c4df471d108da17903426e308aa7b",
+          "size": 1165
+        }
+      },
+      "local_patches": [
+        "vision_config.model_type:qwen3_5_vision->qwen3_5"
+      ],
+      "repo_id": "NemoStation/Marlin-2B-MLX-8bit",
+      "revision": "1434587e21cffe4fe4c874735de23b97aabaf720"
+    },
+    "challenger_minicpm": {
+      "files": {
+        "added_tokens.json": {
+          "sha256": "34d823f7a691ddec4816ac5dfe5fc487963e3d75ab3be374590c02fc0a7fa3f5",
+          "size": 2706
+        },
+        "chat_template.jinja": {
+          "sha256": "aa5ce37126f54ab4c2a948741f6a93d4dc37547445a91b4eed4010c930d3924f",
+          "size": 4233
+        },
+        "config.json": {
+          "sha256": "30e2131be563b5b7100722d142dc761da002df17a2e226784276aa9711bc3c45",
+          "size": 7888
+        },
+        "configuration_minicpmo.py": {
+          "sha256": "b0c56c192d4aa57d3dc358338a4a93413b8b68e7c7a7c5b82a5af35afab1d86a",
+          "size": 10135
+        },
+        "generation_config.json": {
+          "sha256": "cf29e6aecb72503bd220cccb6d86bde84a9f57e77c741dedb8670036106e2119",
+          "size": 178
+        },
+        "model-00001-of-00002.safetensors": {
+          "sha256": "f90098983cc0aa9ebbe229df10c3de352f33a07ef57c321e76437bab5fa5a2c7",
+          "size": 5361810143
+        },
+        "model-00002-of-00002.safetensors": {
+          "sha256": "94eec5685bbbdd2611070d789aa5e5beba9a8fcbd9ba6849762160a9813a0a1d",
+          "size": 781665788
+        },
+        "model.safetensors.index.json": {
+          "sha256": "c532b3554143ab9db87881758a38783676ccdc723d2393b6b1719565f5b90a4c",
+          "size": 168989
+        },
+        "modeling_minicpmo.py": {
+          "sha256": "d9272ddcd2722038959cd14544b86dd4b772ed87fca7d4b4c5837f6c164b1d97",
+          "size": 213435
+        },
+        "modeling_navit_siglip.py": {
+          "sha256": "1a40a58cb7dfa93f723685f860d1cf3caf3a0ecf52b7904db0c4007aacd1536f",
+          "size": 42559
+        },
+        "preprocessor_config.json": {
+          "sha256": "10350f12d5636b24e19265d72c5543b462251f54ca18afaa147f6f2ece9591e0",
+          "size": 842
+        },
+        "processing_minicpmo.py": {
+          "sha256": "3a1f017339b92c2fa768d7737db76cc4689d2280b68a71866b06f7dedc8ac1c2",
+          "size": 67284
+        },
+        "processor_config.json": {
+          "sha256": "b1f8169e1fce08437844ecc70919348963b6d2150909bcd7cf1227bdd88ce25f",
+          "size": 2133
+        },
+        "special_tokens_map.json": {
+          "sha256": "a119f5bb22d8818d33514e0b58a224c111bb8e7aa1702d625a23fbe82e6e86b5",
+          "size": 12002
+        },
+        "tokenization_minicpmo_fast.py": {
+          "sha256": "c9c71d0d7ef0c113829e2d810619c9e0a69cffe04c732c4d80599b40a33bc7bf",
+          "size": 3249
+        },
+        "tokenizer.json": {
+          "sha256": "66664f87759d9e829e7ef0ded96976727374dcd7ca6f3ae9bfe89bbda541e5af",
+          "size": 11437708
+        },
+        "tokenizer_config.json": {
+          "sha256": "10e99093fe363e753e2971a02995f1a75e5ee0c59e4bb133db0070b97795d516",
+          "size": 76832
+        },
+        "utils.py": {
+          "sha256": "0372698343830d4a96524f56a91a8cabf628fd7c57dde8b25db43eed1f6042c1",
+          "size": 95702
+        },
+        "vocab.json": {
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "size": 2776833
+        }
+      },
+      "local_patches": [],
+      "repo_id": "mlx-community/MiniCPM-o-4_5-4bit",
+      "revision": "592c09d85e7bffbc8f8e45a417aa8e9a96119814"
+    }
+  },
+  "schema": 1
+}

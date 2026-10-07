@@ -1,0 +1,134 @@
+category:
+  - smoke
+  - fire
+  - explosion
+  - dust
+  - debris
+  - water
+  - atmosphere
+  - lens_effect
+  - practical_light
+  - plate
+  - impact
+  - sparks
+
+usability:
+  alpha_status: [has_true_alpha, over_black, keyable_bg, no_alpha, unknown]
+  premult_status: [premultiplied, straight, unknown]
+  resolution_tier: [sd, hd, 2k, 4k, 6k_plus]
+  frame_rate_tier: [24, 25, 30, 48, 50, 60, 120_plus, variable]
+  color_space: [rec709, rec2020, aces_cg, log_arri, log_red, linear, srgb, unknown]
+  bit_depth_tier: [8, 10, 12, 16, 32]
+
+smoke:
+  content:
+    density: [wispy, light, medium, heavy, opaque]
+    colour: [white, grey, dark, black, coloured]
+    temperature: [cool, neutral, warm, hot]
+  motion:
+    character: [drifting, billowing, surging, dissipating, rolling, rising, static]
+    direction: [up, down, left, right, toward_camera, away_camera, radial, expanding, no_dominant]
+    speed: [slow, medium, fast]
+    density_evolution: [building, sustained, dissipating]
+    loopable: [looped, one_shot, ambiguous]
+  context:
+    lighting: [frontlit, backlit, sidelit, warm_backlit, cool_backlit, neutral]
+    scale_role: [foreground_hero, midground_density, background_atmosphere]
+
+fire:
+  content:
+    type: [flame, ember_shower, ignition, sustained_burn, flicker, candle, torch, gas_jet]
+    colour: [orange, yellow, white_hot, blue, coloured]
+    scale: [tabletop, body, room, structure, landscape]
+  motion:
+    character: [flickering, surging, sustained, dying, explosive_onset]
+    wind_influence: [none, gentle, strong]
+    intensity_arc: [building, sustained, dissipating]
+    containment: [low, contained, climbing, column]
+  context:
+    lighting: [self_lit, ambient_warm, dark_ambient]
+
+debris:
+  content:
+    material: [rock, concrete, glass, wood, metal, paper, ash, mixed]
+    scale: [fine, medium, chunky, large]
+    quantity: [sparse, moderate, dense, swarm]
+  motion:
+    trajectory: [linear, tumbling, falling_gravity, exploding_outward, settling]
+    speed: [slow, medium, fast, very_fast]
+    gravity_feel: [floating, weighted, heavy_impact, no_gravity]
+    quantity_arc: [building, sustained, dissipating]
+
+water:
+  content:
+    type: [splash, spray, wave, droplet, sheet, cascade, mist]
+    scale: [small, medium, large, hero]
+  motion:
+    direction: [vertical_up, vertical_down, arcing, lateral, radial]
+    gravity_feel: [gravity_driven, atomised, sheet]
+    loopable: [looped, one_shot, ambiguous]
+
+dust:
+  content:
+    density: [light, medium, heavy]
+    particle_scale: [fine, medium, coarse]
+  motion:
+    character: [drifting, settling, kicked_up, swirling, advecting]
+    direction: [up, down, lateral, radial, no_dominant]
+    speed: [slow, medium, fast]
+
+atmosphere:
+  content:
+    type: [haze, fog, mist, low_cloud, heat_distortion]
+    density: [thin, medium, thick]
+  motion:
+    character: [static, drifting, advecting, settling]
+    speed: [still, slow, medium]
+
+lens_effect:
+  content:
+    type: [flare, light_leak, glint, dirt, scratch, bokeh, chromatic_aberration]
+    intensity: [subtle, medium, strong]
+  motion:
+    character: [static, pulsing, sweeping, flickering]
+
+practical_light:
+  content:
+    type: [muzzle_flash, lightning, neon, fluorescent, fire_light, headlight, torch]
+    colour: [orange, yellow, white, blue, coloured]
+  motion:
+    behaviour: [static, pulsing, sweeping, flickering, strobing]
+    change_profile: [ramping_in, ramping_out, oscillating, steady]
+
+plate:
+  content:
+    subject: [sky, skyline, water_surface, landscape, interior, street, crowd, vehicle, person, greenscreen_subject, bluescreen_subject, prop]
+    backing: [green_screen, blue_screen, black, white, practical_location, transparent, unknown]
+    keyability: [keyable, spill_risk, not_keyable, unknown]
+    shot_scale: [wide, medium_wide, medium, close_up, insert, unknown]
+    frame_role: [foreground, midground, background, insert, unknown]
+    edge_contact: [clean_margin, cropped, touches_edge, unknown]
+    prop: [rocket_launcher, weapon, handheld_device, prop, none, unknown]
+    action: [static, turning, gesturing, walking, running, fighting, firing_weapon, falling, unknown]
+    effect_reference: [smoke, fire, muzzle_flash, backblast, explosion, dust_debris, none, unknown]
+    time_of_day: [dawn, day, magic_hour, dusk, night, unknown]
+    weather: [clear, overcast, rain, snow, fog, unknown]
+  motion:
+    camera_motion: [locked_off, slow_drift, handheld, dolly, pan, tilt, aerial]
+    parallax: [high, medium, low, none]
+    speed: [static, slow, moderate, fast]
+
+impact:
+  content:
+    type: [bullet_hit, blunt_impact, blood_spray, ground_impact, water_impact]
+  motion:
+    onset: [instant, fast_buildup, slow_buildup]
+    dissipation: [fast, medium, slow, smoke_trail]
+    debris_pattern: [radial, forward_cone, vertical_column, none]
+
+sparks:
+  content:
+    source: [grinding, welding, electrical, pyrotechnic, ricochet]
+  motion:
+    trajectory: [shower, arcing, scattering, falling]
+    quantity_arc: [burst, sustained, dissipating]

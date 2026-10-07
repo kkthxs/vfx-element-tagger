@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vfx-element-tagger"
+version = "1.0.0rc1"
+description = "Local-first, uncertainty-gated VFX element catalog and semantic search."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Tyson Donnelly" }]
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/kkthxs/vfx-element-tagger"
+Documentation = "https://github.com/kkthxs/vfx-element-tagger/blob/main/docs/USER-GUIDE.md"
+Issues = "https://github.com/kkthxs/vfx-element-tagger/issues"
+Changelog = "https://github.com/kkthxs/vfx-element-tagger/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "build>=1.2", "twine>=5"]
+hashing = ["Pillow>=10", "numpy>=1.26"]
+models = [
+  "huggingface_hub>=0.24",
+  "torch>=2.4",
+  "transformers>=4.46",
+  "sentence-transformers>=3.0",
+  "opencv-python>=4.10",
+  "Pillow>=10",
+  "numpy>=1.26",
+  "torchvision>=0.19",
+  "qwen-vl-utils>=0.0.8",
+  "accelerate>=0.34",
+]
+mlx = [
+  "mlx-vlm>=0.5",
+  "huggingface_hub>=0.24",
+  "opencv-python>=4.10",
+  "numpy>=1.26",
+]
+# Experimental dependencies only; LanceDB integration is not implemented.
+lance = ["lancedb>=0.13", "pyarrow>=17"]
+
+[project.scripts]
+vfx-element-tagger = "vfx_element_tagger.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+vfx_element_tagger = ["data/*.yaml", "data/*.json"]

@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.uv/
+uv.lock
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Project
+elements/
+.cache/
+*.log
+test_assets/
+/data/
+/models/
+.vfx-tagger.json
+.claude/
+.pytest_cache/
+evaluation/stress-*/
+evaluation/relocation-*.json
+evaluation/heldout-*.json
+*.safetensors
+*.gguf
+*.ckpt
+*.pth
+*.pt
+*.bin
+*.sqlite3*
+*.db
+/build/
+/dist/
+.env
+.env.*
+!.env.example
+/backups/
+*.processing-log.jsonl
+*.compare-votes.csv
+*.writer.lock

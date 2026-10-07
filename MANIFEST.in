@@ -1,0 +1,13 @@
+include LICENSE NOTICE README.md CONTRIBUTING.md SECURITY.md
+include CHANGELOG.md
+include .vfx-tagger.example.json .python-version pilot.py
+recursive-include scripts *.py
+recursive-include docs *.md
+recursive-include constraints *.txt
+recursive-include tests *.py
+include evaluation/BENCHMARK-PROTOCOL.md
+exclude evaluation/*.json
+exclude evaluation/*REPORT*.md
+prune evaluation/stress-fixed-2026-10-07
+exclude scripts/stress_test_analysis.py scripts/prepare_article_catalog.py
+exclude constraints/macos-mlx-tested.txt

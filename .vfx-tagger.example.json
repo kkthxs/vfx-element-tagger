@@ -1,0 +1,5 @@
+{
+  "models_dir": "../vfx-element-tagger-models",
+  "cache_dir": ".cache/vfx-element-tagger",
+  "library": "data/library.sqlite3"
+}
